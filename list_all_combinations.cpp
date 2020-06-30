@@ -17,6 +17,7 @@ using namespace std;
 using ll = long long;
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 
+// 0からn-1までの中からm個選ぶnCmパターン全て列挙します。
 set<set<ll>> listAllCombinations(ll n, ll m)
 {
     set<set<ll>> combis;
@@ -48,7 +49,7 @@ set<set<ll>> listAllCombinations(ll n, ll m)
 
 int main()
 {
-    set<set<ll>> combis = listAllCombinations(12, 4);
+    set<set<ll>> combis = listAllCombinations(5, 3);
 
     for (set<ll> combi : combis)
     {
