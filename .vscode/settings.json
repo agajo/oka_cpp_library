@@ -1,0 +1,20 @@
+{
+  "files.associations": {
+    "vector": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "iosfwd": "cpp",
+    "istream": "cpp",
+    "functional": "cpp",
+    "locale": "cpp"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**.out": true,
+    "**.out.dSYM": true
+  }
+}
