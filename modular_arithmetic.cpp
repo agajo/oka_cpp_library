@@ -67,7 +67,7 @@ ll fac[maxN], finv[maxN], inv[maxN];
 
 // テーブルを作る前処理
 // 計算量 O(n)
-void COMinit()
+void initModularTables()
 {
     fac[0] = fac[1] = 1;
     finv[0] = finv[1] = 1;
@@ -81,15 +81,36 @@ void COMinit()
     }
 }
 
-// 二項係数計算
-// 先にCOMinit()を呼んでおくこと！
+// 二項係数計算 nCk
+// 先にinitModularTables()を呼んでおくこと！
 ll modularCombination(ll n, ll k)
 {
+    if (fac[5] != 120)
+    {
+        cout << "call initModularTables() first!!!!!!!!" << endl;
+        return 0;
+    }
     if (n < k)
         return 0;
     if (n < 0 || k < 0)
         return 0;
     return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
+
+// 順列計算 nPk
+// 先にinitModularTables()を呼んでおくこと！
+ll modularPermutation(ll n, ll k)
+{
+    if (fac[5] != 120)
+    {
+        cout << "call initModularTables() first!!!!!!!!" << endl;
+        return 0;
+    }
+    if (n < k)
+        return 0;
+    if (n < 0 || k < 0)
+        return 0;
+    return fac[n] * finv[n - k] % MOD;
 }
 
 // 離散対数、離散平方根についてはまた必要になったら用意する。2020-06-30
@@ -98,7 +119,11 @@ int main()
 {
     cout << modularInverse(3, 13) << endl;
     cout << modularPower(3, 4, 10) << endl;
-    COMinit();
+    initModularTables();
     cout << modularCombination(5, 3) << endl;
     cout << modularCombination(100, 50) << endl;
+    cout << modularCombination(3, 0) << endl;
+    cout << modularPermutation(5, 3) << endl;
+    cout << modularPermutation(100, 50) << endl;
+    cout << modularPermutation(3, 0) << endl;
 }
