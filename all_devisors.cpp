@@ -11,6 +11,7 @@ using ll = long long;
 
 // =========ここから下をコピペ============
 
+// 小さい順(昇順)で約数をすべて列挙します。
 vector<ll> allDivisors(ll n)
 {
 
