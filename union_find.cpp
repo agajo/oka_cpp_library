@@ -18,6 +18,9 @@ using ll = long long;
 
 // =========ここから下をコピペ===========
 
+// main関数までコピペするべき！！
+// find, unite の中身も改造する必要があることでしょう。
+
 // ツリーを平均化しながら、xのrootのインデックスを返します。
 ll find(vector<ll> &parents, ll x)
 {
@@ -55,6 +58,7 @@ int unite(vector<ll> &parents, vector<ll> &ranks, ll x, ll y)
 
 int main()
 {
+    // TODO: 問題を受け取る
     // 問題条件
     ll n = 10;
     vector<pair<ll, ll>> e = vector<pair<ll, ll>>{
@@ -83,6 +87,7 @@ int main()
         unite(parents, ranks, e[i].first, e[i].second);
     }
 
+    // TODO: 出力を書く
     // 最終的にrootになってるagentの個数を数えます
     ll result = 0;
     for (ll i = 0; i < n; ++i)
