@@ -18,39 +18,37 @@ using ll = long long;
 
 // =========ここから下をコピペ===========
 
-// agentsは、(親のインデックス, 自分をrootとするツリーのランク)というペアのvector
 // ツリーを平均化しながら、xのrootのインデックスを返します。
-ll find(vector<pair<ll, ll>> &agents, ll x)
+ll find(vector<ll> &parents, ll x)
 {
-    if (agents[x].first == x)
+    if (parents[x] == x)
     {
         return x;
     }
     else
     {
-        agents[x].first = find(agents, agents[x].first);
-        return agents[x].first;
+        parents[x] = find(parents, parents[x]);
+        return parents[x];
     }
 }
 
-// agentsは、(親のインデックス, 自分をrootとするツリーのランク)というペアのvector
-int unite(vector<pair<ll, ll>> &agents, ll x, ll y)
+int unite(vector<ll> &parents, vector<ll> &ranks, ll x, ll y)
 {
-    ll xRoot = find(agents, x);
-    ll yRoot = find(agents, y);
+    ll xRoot = find(parents, x);
+    ll yRoot = find(parents, y);
     // rankが小さいものを大きいものにuniteします。rankが同じ時は統合後にrankを増やします。
-    if (agents[xRoot].second > agents[yRoot].second)
+    if (ranks[xRoot] > ranks[yRoot])
     {
-        agents[yRoot].first = xRoot;
+        parents[yRoot] = xRoot;
     }
-    else if (agents[xRoot].second < agents[yRoot].second)
+    else if (ranks[xRoot] < ranks[yRoot])
     {
-        agents[xRoot].first = yRoot;
+        parents[xRoot] = yRoot;
     }
     else if (xRoot != yRoot)
     {
-        agents[yRoot].first = xRoot;
-        agents[xRoot].second++;
+        parents[yRoot] = xRoot;
+        ranks[xRoot]++;
     }
     return 0;
 }
@@ -70,24 +68,26 @@ int main()
     };
 
     // 初期化
-    vector<pair<ll, ll>> agents;
+    vector<ll> parents;
+    vector<ll> ranks;
     for (ll i = 0; i < n; ++i)
     {
         // 親は自分、rankは0
-        agents.push_back(pair<ll, ll>{i, 0});
+        parents.push_back(i);
+        ranks.push_back(0);
     }
 
     // edgesに従ってuniteしていきます。
     for (ll i = 0; i < e.size(); ++i)
     {
-        unite(agents, e[i].first, e[i].second);
+        unite(parents, ranks, e[i].first, e[i].second);
     }
 
     // 最終的にrootになってるagentの個数を数えます
     ll result = 0;
     for (ll i = 0; i < n; ++i)
     {
-        if (agents[i].first == i)
+        if (parents[i] == i)
         {
             result++;
         }
