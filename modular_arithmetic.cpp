@@ -42,6 +42,7 @@ ll modularInverse(ll a, ll m)
     return u;
 }
 
+// a^n % modulus を返します。
 // 二乗しながら、必要な奴だけ足してます。必要なやつの判定は2進数使ってうまくやる。
 ll modularPower(ll a, ll n, ll modulus)
 {
