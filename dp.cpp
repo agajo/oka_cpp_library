@@ -49,6 +49,7 @@ ll f(string s, string t, ll i, ll j, vector<vector<bool>> &done, vector<vector<l
     // 漸化式。
     else
     {
+        // 足す場合も比べる場合も、ここは縦にキレイに並ぶように書くと良い。
         ll ans = LLONG_MAX;
         ans = min(ans, f(s, t, i - 1, j, done, dp) + 1);
         ans = min(ans, f(s, t, i, j - 1, done, dp) + 1);
