@@ -32,6 +32,7 @@ int main()
     string n = "-4321";
     string d = "6.28";
     int i = 987;
+    char a = 'j';
 
     // 整数→小数
     double x1 = (double)z1;
@@ -63,5 +64,11 @@ int main()
     // int→ll
     ll x10 = ll{i};
     cout << x10 << endl;
+    // アルファベット→何番目(0-indexed)か
+    ll x11 = a - 'a';
+    cout << x11 << endl;
+    // 何番目(0-indexed)か→アルファベット
+    char x12 = 'a' + z3;
+    cout << x12 << endl;
     return 0;
 }
