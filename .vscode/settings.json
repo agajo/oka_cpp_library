@@ -16,5 +16,6 @@
     "**/.DS_Store": true,
     "**.out": true,
     "**.out.dSYM": true
-  }
+  },
+  "C_Cpp.default.cppStandard": "c++20"
 }
