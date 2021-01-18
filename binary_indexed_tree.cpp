@@ -61,21 +61,9 @@ int main()
     ll n = 11;
     vector<ll> a{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5};
 
-    // 構築。updateTreeを使って構築すると効率が悪いので別でやります。←いや、BITの場合一緒だわ。
-    // TODO: ここのコメントいらんはずなので、消す2021-01-18
+    // 構築。
     vector<ll> tree(n + 1, 0);
-    // for (int i = 1; i <= n; ++i)
-    // {
-    //     ll s = a[i];
-    //     int j = i;
-    //     while (j > 0)
-    //     {
-    //         // 1110 = 1110 - 0010 → 1100 みたいな。一番下位の1を消す。
-    //         j -= (j & (-j));
-    //         s += a[j];
-    //     }
-    //     tree[i] = s;
-    // }
+
     for (int i = 1; i <= n; ++i)
     {
         updateTree(tree, i, a[i - 1]);
@@ -84,7 +72,8 @@ int main()
     // TODO: クエリの処理
     updateTree(tree, 7, 100);
     ll result = getSum(tree, 9) - getSum(tree, 4);
-    cout << result << endl; // 127
+    cout << result << endl;          // 127
+    cout << getSum(tree, 0) << endl; // 0
 
     return 0;
 }
