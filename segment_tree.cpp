@@ -19,6 +19,12 @@ using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 
+// セグメントツリー。セグ木。
+// モノイドで使えます。
+// 可逆な場合(つまり群の場合)はBinary Indexed Treeの方がいいかも？
+
+// 0番は空けて、1-indexedです。
+
 // このコードは、ABC185のF問題に提出してACしたものです。
 
 ll monoidSum(ll left, ll right)
@@ -79,7 +85,7 @@ int main()
         cin >> ts[i] >> xs[i] >> ys[i];
     }
 
-    // セグメントツリーを構築します。
+    // セグメントツリーを構築します。BITと違い、updateTreeを使って構築すると効率が悪いので別でやります。
     ll treeSize = 1;
     ll leafBegin = 1;
     while (treeSize < a.size() * 2)
