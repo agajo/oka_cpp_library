@@ -36,7 +36,8 @@ int updateTree(vector<ll> &tree, int index, ll increment)
 {
     while (index < tree.size())
     {
-        tree[index] += increment;
+        // TODO: 群の演算。問題によって違う。
+        tree[index] = tree[index] + increment;
         // 1110 = 1110 + 0010 → 10000 みたいな。一番下位の1を足す。
         index += (index & (-index));
     }
@@ -49,7 +50,8 @@ ll getSum(vector<ll> &tree, int index)
     ll result = 0;
     while (index > 0)
     {
-        result += tree[index];
+        // TODO: 群の演算。問題によって違う。
+        result = result + tree[index];
         index -= (index & (-index));
     }
     return result;
