@@ -24,7 +24,7 @@ using ll = long long;
 
 // 漸化式。doneとdpは外から受け取ります。
 // 今回は、f(i,j)は「sをi文字消し、tを左にj文字追加した状態までのコスト」とする。
-ll f(string s, string t, ll i, ll j, vector<vector<bool>> &done, vector<vector<ll>> &dp)
+ll f(vector<ll> &s, vector<ll> &t, ll i, ll j, vector<vector<bool>> &done, vector<vector<ll>> &dp)
 {
     // 最重要！計算済みだったら即それを返す。
     if (done[i][j])
@@ -65,11 +65,15 @@ ll f(string s, string t, ll i, ll j, vector<vector<bool>> &done, vector<vector<l
 
 int main()
 {
-    string s = "kittenjlf;aksjdf;lkajwepoifma;lskdjfawefmvpkams;ldkfghqpowmnvdpoasdjkngpqoiwnrg@aksndfpjgqnwpoegjdnqpewodfnapjwenf;vklsdpoqwjnregpcqpijewbragdqwer";
-    string t = "sittingas;dvkmapwiemf;laksdjfoqk2mef@oismdflknvq@o3irgnmlaksdfngopqiwenrmgpjfnqefgq3rvq;oim3fpovkmapi943nmfeopfnga973n4giufn0w9jgnq3p9rdfunqgp3rfnjaiepjfghpq89uw3nrjgpjiqw3gr";
+    ll s, t;
+    cin >> s >> t;
+    vector<ll> a(s);
+    vector<ll> b(t);
+    rep(i, s) cin >> a[i];
+    rep(i, t) cin >> b[i];
 
-    ll n = s.size();
-    ll m = t.size();
+    ll n = a.size();
+    ll m = b.size();
 
     // 計算済みかどうかを記録する配列。下のメモ用配列で兼ねても良い。
     vector<vector<bool>> done(n + 1, vector<bool>(m + 1, false));
@@ -78,6 +82,6 @@ int main()
     vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, false));
 
     // 出力
-    cout << f(s, t, n, m, done, dp) << endl;
+    cout << f(a, b, n, m, done, dp) << endl;
     return 0;
 }
