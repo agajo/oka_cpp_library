@@ -73,58 +73,71 @@ mt19937 engine(seed_gen());
 
 int main()
 {
-    ll n;
-    cin >> n;
-    vector<ll> x(n);
-    vector<ll> y(n);
-    vector<ll> z(n);
-    rep(i, n) cin >> x[i] >> y[i] >> z[i];
+    ll numberOfCities;
+    cin >> numberOfCities;
+    vector<ll> x(numberOfCities);
+    vector<ll> y(numberOfCities);
+    vector<ll> z(numberOfCities);
+    rep(i, numberOfCities) cin >> x[i] >> y[i] >> z[i];
 
-    vector<vector<ll>> dist(n, vector<ll>(n));
-    rep(j, n)
+    // distance
+    vector<vector<ll>> dist(numberOfCities, vector<ll>(numberOfCities));
+    rep(cityFrom, numberOfCities)
     {
-        rep(k, n)
+        rep(cityTo, numberOfCities)
         {
-            // TODO: 都市jからkへの距離。問題によって違うはず。
-            dist[j][k] = abs(x[j] - x[k]) + abs(y[j] - y[k]) + max(ll{0}, z[k] - z[j]);
+            // TODO: 都市cityFromからcityToへの距離。問題によって違うはず。
+            // 都市は0〜(numberOfCities-1) になっていること。
+            dist[cityFrom][cityTo] = abs(x[cityFrom] - x[cityTo]) + abs(y[cityFrom] - y[cityTo]) + max(ll{0}, z[cityTo] - z[cityFrom]);
         }
     }
 
-    // dp[i][j] = 訪問済み都市状態がiで、最後に訪れた都市がjである状態になれる最小コスト
-    vector<vector<ll>> dp(1 << n, vector<ll>(n, LLONG_MAX));
-    // 都市0だけに訪れたことがある状態を作るコストを0とします。
-    dp[1][0] = 0;
+    // dp[state][last] = 訪問済み都市状態がstateで、最後に訪れた都市がlastである状態になれる最小コスト
+    vector<vector<ll>> dp(1 << numberOfCities, vector<ll>(numberOfCities, LLONG_MAX));
+    // 都市一つも訪れてない状態を作るコストは0にします。多分意味ないけど。
+    rep(last, numberOfCities) dp[0][last] = 0;
+
+    // TODO: 「最初の都市としてコスト0でいける都市1つだけに訪れたことがある状態」を作るコストを0とします。
+    // スタートが決まっていない場合
+    // rep(last, numberOfCities)
+    // {
+    //     dp[1 << last][last] = 0;
+    // }
+    // 都市0からスタートする場合
+    dp[1 << 0][0] = 0;
+
     // 状態列挙しながら、そこから次の都市を全列挙しながら、その場合の次の状態におけるコストを更新していきます
-    for (ll i = 1; i < 1 << n; ++i)
+    for (ll state = 1; state < 1 << numberOfCities; ++state)
     {
-        for (ll last = 0; last < n; ++last)
+        for (ll last = 0; last < numberOfCities; ++last)
         {
             // lastが行ったことない場所だったらおかしいのでcontinue
-            if ((i & (1 << last)) == 0)
+            if ((state & (1 << last)) == 0)
             {
                 continue;
             }
-            for (ll j = 0; j < n; ++j)
+            for (ll nextCity = 0; nextCity < numberOfCities; ++nextCity)
             {
                 // 訪問済みの場所に行こうとしてたら意味ないのでcontinue
-                if (i & 1 << j)
+                if (state & 1 << nextCity)
                     continue;
                 // ここから作る次の状態がより良い場合、更新します
-                if (dp[i][last] < LLONG_MAX && dp[i | 1 << j][j] > dp[i][last] + dist[last][j])
+                if (dp[state][last] < LLONG_MAX && dp[state | 1 << nextCity][nextCity] > dp[state][last] + dist[last][nextCity])
                 {
-                    dp[i | 1 << j][j] = dp[i][last] + dist[last][j];
+                    dp[state | 1 << nextCity][nextCity] = dp[state][last] + dist[last][nextCity];
                 }
             }
         }
     }
 
     ll result = LLONG_MAX;
-    rep(j, n)
+    rep(last, numberOfCities)
     {
-        // TODO: 都市0に戻るかどうかによってここの処理は変わるはず。
-        if (result > dp[(1 << n) - 1][j] + dist[j][0])
+        // TODO: 都市0に戻らない場合、+dist[last][0]は不要
+        // スタートがどこでもよくて一周する場合は、0からスタートして0に戻ることにすればOK
+        if (result > dp[(1 << numberOfCities) - 1][last] + dist[last][0])
         {
-            result = dp[(1 << n) - 1][j] + dist[j][0];
+            result = dp[(1 << numberOfCities) - 1][last] + dist[last][0];
         }
     }
     cout << result << endl;
