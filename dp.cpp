@@ -19,69 +19,61 @@ using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 
-// Levenshtein distanceを例に、メモ化再帰を実装しておきます。
-// 引数のsとtが余計な感じがするので、例として不適かも？
+// Levenshtein distanceを例に、DPを実装しておきます。
+// 正しさの確認は ABC185 E で。
 
-// 漸化式。doneとdpは外から受け取ります。
-// 今回は、f(i,j)は「sをi文字消し、tを左にj文字追加した状態までのコスト」とする。
-ll f(vector<ll> &s, vector<ll> &t, ll i, ll j, vector<vector<bool>> &done, vector<vector<ll>> &dp)
+// 今回は、dp[i][j]は「sをi文字消し、tを左にj文字追加した状態までのコスト」とする。
+int fillDpTable(vector<vector<ll>> &dp, vector<ll> &s, vector<ll> &t)
 {
-    // 最重要！計算済みだったら即それを返す。
-    if (done[i][j])
-        return dp[i][j];
-    done[i][j] = true;
-    // TODO: 定義されてる値たち。dpに突っ込んだ上でreturnする。
-    if (i == 0 && j == 0)
+    // TODO: 初期値を埋めます。
+    rep(i, dp.size())
     {
-        dp[i][j] = 0;
-        return 0;
+        dp[i][0] = i;
     }
-    else if (i == 0)
+    rep(j, dp[0].size())
     {
-        dp[i][j] = j;
-        return j;
+        dp[0][j] = j;
     }
-    else if (j == 0)
+
+    // 残りをすべて埋めていきます。
+    // TODO: 埋める範囲はこれでいい？
+    for (ll i = 1; i < dp.size(); ++i)
     {
-        dp[i][j] = i;
-        return i;
-    }
-    // 漸化式。
-    else
-    {
-        // 足す場合も比べる場合も、ここは縦にキレイに並ぶように書くと良い。
-        ll ans = LLONG_MAX;
-        ans = min(ans, f(s, t, i - 1, j, done, dp) + 1);
-        ans = min(ans, f(s, t, i, j - 1, done, dp) + 1);
-        ans = min(ans, f(s, t, i - 1, j - 1, done, dp) + 1);
-        if (s[i - 1] == t[j - 1])
+        for (ll j = 1; j < dp[0].size(); ++j)
         {
-            ans = min(ans, f(s, t, i - 1, j - 1, done, dp));
+            // TODO: 漸化式に従って、埋めていく処理。
+            // 足す場合も比べる場合も、ここは縦にキレイに並ぶように書くと良い。
+            ll ans = LLONG_MAX;
+            ans = min(ans, dp[i - 1][j] + 1);
+            ans = min(ans, dp[i][j - 1] + 1);
+            ans = min(ans, dp[i - 1][j - 1] + 1);
+            if (s[i - 1] == t[j - 1])
+            {
+                ans = min(ans, dp[i - 1][j - 1]);
+            }
+            dp[i][j] = ans;
         }
-        dp[i][j] = ans;
-        return ans;
     }
+    return 0;
 }
 
 int main()
 {
-    ll s, t;
-    cin >> s >> t;
-    vector<ll> a(s);
-    vector<ll> b(t);
-    rep(i, s) cin >> a[i];
-    rep(i, t) cin >> b[i];
+    // TODO: 入力を正しく受け取る
+    ll sourceSize, targetSize;
+    cin >> sourceSize >> targetSize;
+    vector<ll> source(sourceSize);
+    vector<ll> target(targetSize);
+    rep(i, sourceSize) cin >> source[i];
+    rep(i, targetSize) cin >> target[i];
 
-    ll n = a.size();
-    ll m = b.size();
+    // TODO: DP Tableの大きさを指定
+    vector<vector<ll>> dp(sourceSize + 1, vector<ll>(targetSize + 1, 0));
 
-    // 計算済みかどうかを記録する配列。下のメモ用配列で兼ねても良い。
-    vector<vector<bool>> done(n + 1, vector<bool>(m + 1, false));
+    // TODO: DP表を埋めます。引数合わせて。
+    fillDpTable(dp, source, target);
 
-    // メモ用配列
-    vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, 0));
-
-    // 出力
-    cout << f(a, b, n, m, done, dp) << endl;
+    // TODO: 出力はこれでいい？
+    cout << dp[sourceSize][targetSize] << endl;
     return 0;
 }
