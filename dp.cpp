@@ -30,7 +30,7 @@ ll f(vector<ll> &s, vector<ll> &t, ll i, ll j, vector<vector<bool>> &done, vecto
     if (done[i][j])
         return dp[i][j];
     done[i][j] = true;
-    // 定義されてる値たち。
+    // TODO: 定義されてる値たち。dpに突っ込んだ上でreturnする。
     if (i == 0 && j == 0)
     {
         dp[i][j] = 0;
@@ -79,7 +79,7 @@ int main()
     vector<vector<bool>> done(n + 1, vector<bool>(m + 1, false));
 
     // メモ用配列
-    vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, false));
+    vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, 0));
 
     // 出力
     cout << f(a, b, n, m, done, dp) << endl;
