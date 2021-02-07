@@ -30,11 +30,12 @@ ll bs(ll n, ll k, vector<ll> &a, vector<ll> &f)
     // ここから答えを二分探索
     // left < 目的の整数 <= right を常に保ったまま、範囲を狭めます。
     // ここの等号不等号を逆にしなければならないことがある！
-    // その場合、出力するものをleftに変えること。
+    // その場合、出力するものをleftに変えること。コードを変えるのはそこだけだけど。
 
     // leftの初期値注意。
     // left = 0だと、rightが0になれないので、答えに0がありうる場合はleftの初期値は-1。
     // 答えに負の数もありうる時はleftの初期値はLLONG_MIN。
+    // overflow対策でmidで割り算する前にmid!=0を確認してね。
     ll left = -1;
     ll right = LLONG_MAX;
 
@@ -45,6 +46,8 @@ ll bs(ll n, ll k, vector<ll> &a, vector<ll> &f)
         // l < 目的の整数 <= mid (ansIsInLeftRange)なのか
         // mid < 目的の整数 <= right (!ansIsInLeftRange)なのかを判定します。
         // TODO: その判定方法は問題によって違う
+        // ここの判定によって、統合不等号がどっちになるのか決まる！ここを先に決めてから判断すること！
+
         ll kNeeds = 0;
         rep(i, n)
         {
@@ -65,6 +68,7 @@ ll bs(ll n, ll k, vector<ll> &a, vector<ll> &f)
     }
     // TODO: 等号不等号を逆にした場合は、leftを出力
     return right;
+    // return left;
 }
 
 int main()
