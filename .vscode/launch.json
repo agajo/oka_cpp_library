@@ -12,6 +12,7 @@
       "args": [],
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "clang++ build active file",
+      // "stdio": ["./sub1_34.txt",null,null]
       "stdio": null
     }
   ]

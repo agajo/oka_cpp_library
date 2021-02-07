@@ -21,6 +21,52 @@ using ll = long long;
 
 // ABC144 E に提出してACしたものです。
 
+// 二分探索で特定の整数を見つけます。欲しい整数が一意に定まるように定義しておくこと！
+// LLONG_MAXからはじめて範囲を狭めていくので、オーバーフロー注意！
+
+// TODO: 引数は問題によって違うよ
+ll bs(ll n, ll k, vector<ll> &a, vector<ll> &f)
+{
+    // ここから答えを二分探索
+    // left < 目的の整数 <= right を常に保ったまま、範囲を狭めます。
+    // ここの等号不等号を逆にしなければならないことがある！
+    // その場合、出力するものをleftに変えること。
+
+    // leftの初期値注意。
+    // left = 0だと、rightが0になれないので、答えに0がありうる場合はleftの初期値は-1。
+    // 答えに負の数もありうる時はleftの初期値はLLONG_MIN。
+    ll left = -1;
+    ll right = LLONG_MAX;
+
+    while (left + 1 != right)
+    {
+        ll mid = (left + right) / 2;
+
+        // l < 目的の整数 <= mid (ansIsInLeftRange)なのか
+        // mid < 目的の整数 <= right (!ansIsInLeftRange)なのかを判定します。
+        // TODO: その判定方法は問題によって違う
+        ll kNeeds = 0;
+        rep(i, n)
+        {
+            if (a[i] * f[i] > mid)
+            {
+                kNeeds += (a[i] * f[i] - mid + f[i] - 1) / f[i];
+            }
+        }
+        bool ansIsInLeftRange = (kNeeds <= k);
+        if (ansIsInLeftRange)
+        {
+            right = mid;
+        }
+        else
+        {
+            left = mid;
+        }
+    }
+    // TODO: 等号不等号を逆にした場合は、leftを出力
+    return right;
+}
+
 int main()
 {
     // TODO: 変数・入出力を正しく
@@ -32,33 +78,8 @@ int main()
     sort(a.begin(), a.end());
     sort(f.rbegin(), f.rend());
 
-    // ここから答えを二分探索
-    ll left = 0;
-    ll right = LLONG_MAX;
-    while (left != right)
-    {
-        // TODO: 答えが、thresholdAnswer以下である条件を記述
-        ll thresholdAnswer = (left + right) / 2;
-
-        ll kNeeds = 0;
-        rep(i, n)
-        {
-            if (a[i] * f[i] > thresholdAnswer)
-            {
-                kNeeds += (a[i] * f[i] - thresholdAnswer + f[i] - 1) / f[i];
-            }
-        }
-        bool isSmall = kNeeds <= k;
-        if (isSmall)
-        {
-            right = (left + right) / 2;
-        }
-        else
-        {
-            left = (left + right) / 2 + 1;
-        }
-    }
-    cout << left << endl;
+    ll ans = bs(n, k, a, f);
+    cout << ans << endl;
 
     return 0;
 }
