@@ -9,8 +9,36 @@ using ll = long long;
 
 #define rep(i, n) for (int i = 0; i < (n); ++i)
 
-// =========ここから下をコピペ============
+// =========素因数分解Aここから下をコピペ============
+// 試し割りによる方法。O(√n)です。m回やるならO(m√n)
+// 返り値は{素数、その個数}のvector
+vector<pair<ll, ll>> primeFactorizationA(ll n)
+{
+    vector<pair<ll, ll>> ans;
+    ll k = n;
+    for (ll i = 2; i * i <= n; i++)
+    {
+        ll count = 0;
+        while (k % i == 0)
+        {
+            count++;
+            k /= i;
+        }
+        if (count > 0)
+            ans.push_back({i, count});
+    }
+    if (k != 1)
+        ans.push_back({k, 1});
+    return ans;
+}
 
+// =========素因数分解Aここまで============
+
+// =========素因数分解Bここから下をコピペ============
+// 事前に(1でない)最小約数を記録した配列を作る。
+// 事前計算O(nlogn)、分解一回はO(logn)
+// m回やるならO((n+m)logn)
+// nが10^6を超えている時は使えない！！！！
 vector<ll> makeMinDivisers(ll n)
 {
     vector<ll> mins(n + 1);
@@ -30,7 +58,8 @@ vector<ll> makeMinDivisers(ll n)
 }
 
 // minDivisersをコピーせずに使い回すため、参照渡し
-vector<pair<ll, ll>> primeFactorization(ll n, vector<ll> &minDivisers)
+// 返り値は{素数、その個数}のvector
+vector<pair<ll, ll>> primeFactorizationB(ll n, vector<ll> &minDivisers)
 {
     if (n > minDivisers.size() - 1)
     {
@@ -61,22 +90,38 @@ vector<pair<ll, ll>> primeFactorization(ll n, vector<ll> &minDivisers)
     result.push_back(pair<ll, ll>{lastDiviser, count});
     return result;
 }
+// =========素因数分解Bここまで============
 
 int main()
 {
     ll n = 1000000;
-    vector<ll> minDivisers = makeMinDivisers(n + 2);
-    vector<vector<pair<ll, ll>>> result;
-    for (ll i = 2; i < n; ++i)
+    vector<vector<pair<ll, ll>>> resultA;
+    for (ll i = n - 9; i <= n; ++i)
     {
-        result.push_back(primeFactorization(i, minDivisers));
+        resultA.push_back(primeFactorizationA(i));
     }
-    for (ll i = result.size() - 10; i < result.size(); ++i)
+    for (ll i = resultA.size() - 10; i < resultA.size(); ++i)
     {
-        cout << i + 2 << " = ";
-        for (ll j = 0; j < result[i].size(); ++j)
+        cout << n + i - 9 << " = ";
+        for (ll j = 0; j < resultA[i].size(); ++j)
         {
-            cout << get<0>(result[i][j]) << "^" << get<1>(result[i][j]) << " * ";
+            cout << get<0>(resultA[i][j]) << "^" << get<1>(resultA[i][j]) << " * ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+    vector<ll> minDivisers = makeMinDivisers(n + 2);
+    vector<vector<pair<ll, ll>>> resultB;
+    for (ll i = n - 9; i <= n; ++i)
+    {
+        resultB.push_back(primeFactorizationB(i, minDivisers));
+    }
+    for (ll i = resultB.size() - 10; i < resultB.size(); ++i)
+    {
+        cout << n + i - 9 << " = ";
+        for (ll j = 0; j < resultB[i].size(); ++j)
+        {
+            cout << get<0>(resultB[i][j]) << "^" << get<1>(resultB[i][j]) << " * ";
         }
         cout << endl;
     }
