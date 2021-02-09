@@ -10,6 +10,7 @@
         "args": [
           "-std=c++17",
           "-stdlib=libc++",
+          "-fsanitize=undefined,address",
           "-g",
           "${file}",
           "-o",

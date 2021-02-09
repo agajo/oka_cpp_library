@@ -39,7 +39,7 @@ vector<pair<ll, ll>> primeFactorizationA(ll n)
 // 事前計算O(nlogn)、分解一回はO(logn)
 // m回やるならO((n+m)logn)
 // nが10^6を超えている時は使えない！！！！
-vector<ll> makeMinDivisers(ll n)
+vector<ll> makeMinDivisors(ll n)
 {
     vector<ll> mins(n + 1);
     rep(i, n + 1) mins[i] = i;
@@ -57,13 +57,13 @@ vector<ll> makeMinDivisers(ll n)
     return mins;
 }
 
-// minDivisersをコピーせずに使い回すため、参照渡し
+// minDivisorsをコピーせずに使い回すため、参照渡し
 // 返り値は{素数、その個数}のvector
-vector<pair<ll, ll>> primeFactorizationB(ll n, vector<ll> &minDivisers)
+vector<pair<ll, ll>> primeFactorizationB(ll n, vector<ll> &minDivisors)
 {
-    if (n > minDivisers.size() - 1)
+    if (n > minDivisors.size() - 1)
     {
-        cout << "error! n must be <= minDivisers.size()-1" << endl;
+        cout << "error! n must be <= minDivisors.size()-1" << endl;
     }
     else if (n <= 1)
     {
@@ -71,23 +71,23 @@ vector<pair<ll, ll>> primeFactorizationB(ll n, vector<ll> &minDivisers)
     }
     vector<pair<ll, ll>> result;
     ll x = n;
-    ll lastDiviser = minDivisers[n];
+    ll lastDivisor = minDivisors[n];
     ll count = 0;
     while (x != 1)
     {
-        if (minDivisers[x] == lastDiviser)
+        if (minDivisors[x] == lastDivisor)
         {
             ++count;
-            x = x / minDivisers[x];
+            x = x / minDivisors[x];
         }
         else
         {
-            result.push_back(pair<ll, ll>{lastDiviser, count});
-            lastDiviser = minDivisers[x];
+            result.push_back(pair<ll, ll>{lastDivisor, count});
+            lastDivisor = minDivisors[x];
             count = 0;
         }
     }
-    result.push_back(pair<ll, ll>{lastDiviser, count});
+    result.push_back(pair<ll, ll>{lastDivisor, count});
     return result;
 }
 // =========素因数分解Bここまで============
@@ -110,11 +110,11 @@ int main()
         cout << endl;
     }
     cout << endl;
-    vector<ll> minDivisers = makeMinDivisers(n + 2);
+    vector<ll> minDivisors = makeMinDivisors(n + 2);
     vector<vector<pair<ll, ll>>> resultB;
     for (ll i = n - 9; i <= n; ++i)
     {
-        resultB.push_back(primeFactorizationB(i, minDivisers));
+        resultB.push_back(primeFactorizationB(i, minDivisors));
     }
     for (ll i = resultB.size() - 10; i < resultB.size(); ++i)
     {
