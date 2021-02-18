@@ -22,6 +22,7 @@ using ll = long long;
 // BIT
 // Binary Indexed Tree
 // Fenwick Tree
+// 更新と出力の両方が頻繁にあり、普通にやっても累積和でやってもだめな場合の折衷案として使えます。
 
 // Inverse Semigroup で使えますが、普通は群でしょう。
 // 可逆でなく、単なるモノイドの場合はセグメントツリーを使うこと。
