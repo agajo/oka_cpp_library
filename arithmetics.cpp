@@ -30,7 +30,7 @@ ll power(ll base, ll exponent)
 }
 
 // 割り算いろいろ
-// (商×序数)が元の数を超えない割り算(余り非正)
+// (商×序数)が元の数を超えない割り算(余り非負)
 ll re(ll x, ll m)
 {
     return (x % m + m) % m;
