@@ -30,7 +30,7 @@ ll power(ll base, ll exponent)
 }
 
 // 割り算いろいろ
-// (商×序数)が元の数を超えない割り算(余り非負)
+// (商×序数)が元の数を超えない割り算(余り非負)(0 <= r < m)
 ll re(ll x, ll m)
 {
     return (x % m + m) % m;
@@ -41,7 +41,7 @@ ll qu(ll x, ll m)
     return (x - re(x, m)) / m;
 }
 
-// (商×序数)が元の数を下回らない割り算(余り非正)(余りというより不足を考える)
+// (商×序数)が元の数を下回らない割り算(余り非正)(余りというより不足を考える)(-m < r <= 0)
 ll re2(ll x, ll m)
 {
     return (x % m - m) % m;
@@ -66,6 +66,17 @@ ll qu3(ll x, ll m)
     return (x - re3(x, m)) / m;
 }
 
+// (商×序数)が元の数以上にならない割り算(0 < r <= m)
+ll re4(ll x, ll m)
+{
+    return ((x - 1) % m + m) % m + 1;
+}
+
+ll qu4(ll x, ll m)
+{
+    return (x - re4(x, m)) / m;
+}
+
 int main()
 {
     cout << power(2, 0) << endl;
@@ -84,9 +95,12 @@ int main()
             cout << "error with qu2 and re2" << endl;
         if (x != qu3(x, m) * m + re3(x, m))
             cout << "error with qu3 and re3" << endl;
+        if (x != qu4(x, m) * m + re4(x, m))
+            cout << "error with qu4 and re4" << endl;
         cout << x << "÷" << m << "=" << qu(x, m) << "…" << re(x, m) << ' ';
         cout << x << "÷" << m << "=" << qu2(x, m) << "…" << re2(x, m) << ' ';
         cout << x << "÷" << m << "=" << qu3(x, m) << "…" << re3(x, m) << ' ';
+        cout << x << "÷" << m << "=" << qu4(x, m) << "…" << re4(x, m) << ' ';
         cout << endl;
     }
 
