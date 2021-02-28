@@ -22,6 +22,7 @@ using ll = long long;
 
 // mx+ny=target の解(x,y)を一つだけ返します。後はなんとかしてください。
 // targetがgcd(m,n)の倍数じゃない場合、(LLONG_MAX, LLONG_MAX)を返します
+// target=gcd(m,n)の解だけ出して使い回せる時に、この関数をtargetを変えながら何度も呼ばないように注意。
 pair<ll, ll> bezout(ll m, ll n, ll target)
 {
     ll a = m;
