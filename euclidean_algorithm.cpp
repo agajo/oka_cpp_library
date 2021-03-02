@@ -21,10 +21,29 @@ using ll = long long;
 // ↑にある逆行列の方法でやってます。
 
 // mx+ny=target の解(x,y)を一つだけ返します。後はなんとかしてください。
+// 正負の制限はなし。どれが正でも負でも0でもOK。
 // targetがgcd(m,n)の倍数じゃない場合、(LLONG_MAX, LLONG_MAX)を返します
 // target=gcd(m,n)の解だけ出して使い回せる時に、この関数をtargetを変えながら何度も呼ばないように注意。
 pair<ll, ll> bezout(ll m, ll n, ll target)
 {
+    if (target == 0)
+        return {0, 0};
+    if (m == 0 && n == 0)
+        return {LLONG_MAX, LLONG_MAX};
+    if (m == 0)
+    {
+        if (target % n == 0)
+            return {0, target / n};
+        else
+            return {LLONG_MAX, LLONG_MAX};
+    }
+    if (n == 0)
+    {
+        if (target % m == 0)
+            return {target / m, 0};
+        else
+            return {LLONG_MAX, LLONG_MAX};
+    }
     ll a = m;
     ll b = n;
     ll x = 1;
@@ -55,19 +74,26 @@ pair<ll, ll> bezout(ll m, ll n, ll target)
     return pair<ll, ll>{x * ratio, y * ratio};
 }
 
-// 大きな数でうまく動かないので非推奨！！！！
 // m1で割ってr1余り、m2で割ってr2余るような非負整数(lcm(m1,m2)未満)を返します
+// m1, m2は正。0<=r1<m1, 0<=r2<m2 が前提のコード。それ以外の時は未調査。
 // 存在しない場合は-1を返します。
-// 大きな数でうまく動かないので非推奨！！！！
 ll chineseRemainder(ll r1, ll r2, ll m1, ll m2)
 {
     ll m = lcm(m1, m2);
     // n = m1q1+r1 = m2q2+r2 なので
     // q1m1-q2m2=r2-r1 なるBezoutを解く。
-    pair<ll, ll> p = bezout(m1, m2, r2 - r1);
+    pair<ll, ll> p = bezout(m1, -m2, r2 - r1);
     if (p.first == LLONG_MAX)
         return -1;
-    ll n = m1 * p.first + r1;
+    ll n;
+    ll q1 = p.first;
+    ll q2 = p.second;
+    // bezout()が返したのは最小とは限らないので、
+    // m2' = m2/gcd ずつq1を減らしていって、減らしきった残りで置き換える
+    ll m2dash = m2 / gcd(m1, m2);
+    q1 = (q1 % m2dash + m2dash) % m2dash;
+    n = m1 * q1 + r1;
+
     n = (n % m + m) % m;
     return n;
 }
@@ -86,6 +112,9 @@ int main()
     // 12,15で割って4,8余る整数(<lcm(12,15))を返します(存在しない)
     ll ans3 = chineseRemainder(4, 8, 12, 15);
     cout << ans3 << endl;
+    // 268537208999999999が返ればOK
+    ll ans4 = chineseRemainder(1000000073, 999999999, 2000000998, 1000000000);
+    cout << ans4 << endl;
 
     return 0;
 }
