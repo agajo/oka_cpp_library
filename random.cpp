@@ -17,6 +17,8 @@
 using namespace std;
 using ll = long long;
 
+#define rep(i, n) for (int i = 0; i < (n); ++i)
+
 random_device seed_gen;
 mt19937 engine(seed_gen());
 // 0, 1, 2 のどれかが得られる一様分布
@@ -27,6 +29,8 @@ mt19937 engine(seed_gen());
 int main()
 {
     uniform_int_distribution<> dist(0, 2);
-    cout << dist(engine) << endl;
+    rep(i, 100)
+            cout
+        << dist(engine) << endl;
     return 0;
 }

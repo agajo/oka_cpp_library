@@ -16,6 +16,8 @@ using namespace std;
 // 問題が起こるまでintは使用禁止2020-04-13
 using ll = long long;
 
+#define rep(i, n) for (int i = 0; i < (n); ++i)
+
 // =========ここから下をコピペ===========
 
 // main関数までコピペするべき！！
