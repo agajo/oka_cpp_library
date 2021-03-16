@@ -44,16 +44,26 @@ ll modularInverse(ll a, ll m)
 
 // a^n % modulus を返します。
 // 二乗しながら、必要な奴だけ足してます。必要なやつの判定は2進数使ってうまくやる。
-ll modularPower(ll a, ll n, ll modulus)
+// 10^7回以上呼ぶ場合はメモ化しましょう！！コメントを解除すればOK。
+ll modularPower(ll a,
+                ll n,
+                ll modulus
+                // , vector<vector<ll>> &memo
+)
 {
+    // if (memo[a][n] != -1)
+    //     return memo[a][n];
+    ll x = a;
+    ll k = n;
     ll result = 1;
-    while (n > 0)
+    while (k > 0)
     {
-        if (n & 1)
-            result = result * a % modulus;
-        a = a * a % modulus;
-        n >>= 1;
+        if (k & 1)
+            result = result * x % modulus;
+        x = x * x % modulus;
+        k >>= 1;
     }
+    // memo[originalA][originalN] = result;
     return result;
 }
 
