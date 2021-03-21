@@ -21,6 +21,8 @@ using ll = long long;
 // 返り値は昇順ソート済みになる
 vector<vector<ll>> listAllCombinations(ll n, ll m)
 {
+    if (m == 0)
+        return vector<vector<ll>>{vector<ll>{}};
     vector<vector<ll>> combis;
     queue<vector<ll>> que;
     rep(i, n - m + 1) que.push(vector<ll>{i});
@@ -82,4 +84,8 @@ int main()
             cout << *itr << ' ';
         cout << endl;
     }
+    cout << "===============================" << endl;
+    vector<vector<ll>> cc = listAllCombinations(4, 0);
+    cout << cc.size() << endl;    // 1
+    cout << cc[0].size() << endl; // 0
 }
